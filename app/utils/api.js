@@ -1,13 +1,32 @@
-export function fetchPopularRepos (language) {
-  const endpoint = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
-
-  return fetch(endpoint)
+export function fetchExperiments (projectID, token) {
+  return fetch(`https://api.optimizely.com/v2/experiments?project_id=${projectID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     .then((res) => res.json())
     .then((data) => {
-      if (!data.items) {
+      console.log(data)
+      if (!data) {
         throw new Error(data.message)
       }
+      
+      return data
+    })
+}
 
-      return data.items
+export function fetchExperimentsResults (experimentID, token) {
+  return fetch(`https://api.optimizely.com/v2/experiments/${experimentID}/results`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data) {
+        throw new Error(data.message)
+      }
+      
+      return data
     })
 }

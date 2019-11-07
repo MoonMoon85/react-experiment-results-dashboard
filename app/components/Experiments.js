@@ -31,15 +31,34 @@ function Navigation({onUpdateClient}) {
 }
 
 function ResultsGrid ({ results }) {
-  
   return (
     <ul className='grid space-around'>
       {results.map((result, index) => {
         return (
           <li key={index} className='repo bg-light'>
             <h4 className='header-lg center-text'>
-              {result.metrics[0].name}
+              {result.experiment_id}
             </h4>
+            <ul>
+              {result.metrics.map((metric, index) => {
+                return (
+                  <li key={index}>
+                    {metric.name}
+                    {Object.keys(metric.results).filter((result) => {
+                      
+                      return !metric.results[result].is_baseline;
+                    })
+                    .map((result, index) => {
+                      return (
+                        <div key={metric.results[result].variation_id}>
+                          {metric.results[result].lift.is_significant && `Variation ${index + 1} is Stat Sig`}
+                        </div>
+                      )
+                    })}
+                  </li>
+                )
+              })}
+            </ul>
           </li>
         )
       })}

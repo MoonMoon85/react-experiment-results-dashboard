@@ -6,7 +6,6 @@ export function fetchExperiments (projectID, token) {
     })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data)
       if (!data) {
         throw new Error(data.message)
       }
